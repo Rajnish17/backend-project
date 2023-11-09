@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 // Define the user schema
 const userSchema = new mongoose.Schema({
-    firstname: {
+    firstName: {
         type: String,
         required: true,
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true,
     },
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    phoneno: {
+    phoneNo: {
         type: String,
         required: true,
     },
@@ -35,11 +35,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    pincode: {
+    pinCode: {
         type: String,
         required: true,
     },
-    landmark: String,
+    landMark: String,
     password: {
         type: String,
         required: true,

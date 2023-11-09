@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const{sendOTP}=require("./otp.controller");
 
 //signup controller here
 const Signup = async (req, res) => {
@@ -128,10 +129,27 @@ const Login = async (req, res) => {
     }
 };
 
-
+const check=async(req,res)=>{
+    const phoneNumber=req.body.phoneno;
+try {
+    await sendOTP(phoneNumber);
+    res.status(200).json({
+        success:true,
+        message:"otp sent"
+    })
+} catch (error) {
+    console.log(error);
+    res.status(500).json({
+        success:false,
+        message:error
+    
+    })
+}
+}
 
 
 module.exports = {
     Signup,
-    Login
+    Login,
+    check
 };

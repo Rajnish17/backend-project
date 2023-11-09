@@ -46,10 +46,13 @@ const sendOTPHandler = async (req, res) => {
 
 const verifyOtpHandler = (req, res) => {
   const userOTP = req.body.otp; 
-  console.log(userOTP, storedOTP);
+  // console.log(userOTP, storedOTP);
   try {
     if (userOTP === storedOTP) {
-      res.json({ message: 'OTP verified successfully' });
+      res.json({ 
+        message: 'OTP verified successfully',
+        success: true
+       });
     } else {
       res.status(400).json({
         message: 'Invalid OTP',
@@ -66,5 +69,6 @@ const verifyOtpHandler = (req, res) => {
 
 module.exports = {
   verifyOtpHandler,
-  sendOTPHandler
+  sendOTPHandler,
+  sendOTP
 };
