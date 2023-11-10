@@ -17,6 +17,6 @@ const customerSchema = new mongoose.Schema({
   totalEmiDuration: { type: Number, required: true },
   paidEmis: { type: Number, required: true },
   lastPaidAmount: { type: Number, required: true },
-},{timestamps:true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Customer', customerSchema);

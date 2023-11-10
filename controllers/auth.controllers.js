@@ -5,10 +5,10 @@ const{sendOTP}=require("./otp.controller");
 
 //signup controller here
 const Signup = async (req, res) => {
-    const { firstname, lastname, email, phoneno, address, state, city, block, pincode, landmark, password } = req.body;
+    const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, landmark, password,role} = req.body;
 
     // Check if any of the required parameters are missing
-    if (!firstname || !lastname || !email || !phoneno || !address || !state || !city || !block || !pincode || !password) {
+    if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password ||!role) {
         return res.status(400).json({
             success: false,
             message: "Please provide all required details",
@@ -38,16 +38,17 @@ const Signup = async (req, res) => {
 
         // Create a new user instance with the hashed password
         const newUser = new User({
-            firstname,
-            lastname,
+            firstName,
+            lastName,
             email,
-            phoneno,
+            phoneNo,
             address,
             state,
             city,
             block,
-            pincode,
+            pinCode,
             landmark,
+            role,
             password: hashedPassword,
         });
 
@@ -60,10 +61,11 @@ const Signup = async (req, res) => {
             user: newUser,
         });
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         res.status(500).json({
             success: false,
             message: "Internal server error",
+            error:error
         });
     }
 };
@@ -121,10 +123,11 @@ const Login = async (req, res) => {
             token,
         });
     } catch (error) {
-        console.error(error);
+        // console.error(error);
         res.status(500).json({
             success: false,
             message: "Internal server error",
+            error:error
         });
     }
 };
@@ -138,12 +141,12 @@ try {
         message:"otp sent"
     })
 } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
-        success:false,
-        message:error
-    
-    })
+        success: false,
+        message: "Internal server error",
+        error:error
+    });
 }
 }
 

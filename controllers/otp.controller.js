@@ -27,7 +27,10 @@ const sendOTP = async (phoneNumber) => {
     });
   } catch (error) {
     console.log(error);
-    throw error; // Rethrow the error to handle it in the calling function
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+  });
   }
 }
 
@@ -38,9 +41,9 @@ const sendOTPHandler = async (req, res) => {
     res.json({ message: 'OTP sent successfully' });
   } catch (error) {
     res.status(500).json({
-      message: error.message, // Display the error message
-      success: false
-    });
+      success: false,
+      message: "Internal server error",
+  });
   }
 };
 
@@ -61,9 +64,9 @@ const verifyOtpHandler = (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: error.message, // Display the error message
-      success: false
-    });
+      success: false,
+      message: "Internal server error",
+  });
   }
 }
 

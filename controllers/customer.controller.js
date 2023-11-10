@@ -54,7 +54,10 @@ const createCustomer = async (req, res) => {
       message:"customer registered success"
     });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+  });
   }
 };
 
@@ -67,7 +70,10 @@ const getAllCustomers = async (req, res) => {
       data:customers
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+  });
   }
 };
 
