@@ -1,23 +1,93 @@
-const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
-const checkUserType = async (req, res, next) => {
-  const email = req.body.email;
+const isAdmin = (req, res, next) => {
+  let token =req.headers.token
+  
   try {
-    // Use findOne instead of find to get a single user
-    const user = await User.findOne({ email });
+    token= token.split(" ")[1];
+    if(token){
+      let user=jwt.verify(token,process.env.JWT_SECRET);
+      req.user=user.role
+      
+      if(req.user =="admin"){
 
-    // Check if the user exists and has the role 'user'
-    if (user && user.role === 'user') {
-      next();
-    } else {
-      res.status(401).json({ error: "You are not authorized" });
+        next();
+      }else{
+        res.status(400).json({
+          success:false,
+          message:"you are not authorised"
+        })
+      }
     }
+    
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error);
+    res.status(500).json({
+      success:false,
+    })
+  }
+};
+
+const isRetailer = (req, res, next) => {
+  let token =req.headers.token
+  
+  try {
+    token= token.split(" ")[1];
+    if(token){
+      let user=jwt.verify(token,process.env.JWT_SECRET);
+      // req.user=user.role
+      // console.log(user);
+      console.log(req.user);
+      if(req.user =="retailer"){
+
+        next();
+      }else{
+        res.status(400).json({
+          success:false,
+          message:"you are not authorised"
+        })
+      }
+    }
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success:false,
+    })
+  }
+};
+
+const isCustomer = (req, res, next) => {
+  let token =req.headers.token
+  
+  try {
+    token= token.split(" ")[1];
+    if(token){
+      let user=jwt.verify(token,process.env.JWT_SECRET);
+      req.user=user.role
+      // console.log(user);
+      // console.log(req.user);
+      if(req.user =="customer"){
+
+        next();
+      }else{
+        res.status(400).json({
+          success:false,
+          message:"you are not authorised"
+        })
+      }
+    }
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success:false,
+    })
   }
 };
 
 module.exports = {
-  checkUserType,
+  isAdmin,
+  isRetailer,
+  isCustomer
 };

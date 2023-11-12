@@ -109,6 +109,7 @@ const Login = async (req, res) => {
             {
                 userId: user._id,
                 email: user.email,
+                role:user.role
             },
             process.env.JWT_SECRET, // Use a secret key stored in your environment variables
             {
