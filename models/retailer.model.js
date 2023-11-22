@@ -53,14 +53,9 @@ const retailerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    enum: ['admin', 'customer', 'retailer'],
-    default: 'retailer'
-  },
+  role: { type: String, enum: ['admin', 'customer', 'retailer'], default: 'retailer' },
 
-
-
+  
 }, { timestamps: true })
 
 module.exports = mongoose.model('Retailer', retailerSchema);

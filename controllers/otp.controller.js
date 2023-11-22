@@ -1,77 +1,57 @@
-require("dotenv").config();
-const twilio = require('twilio');
+const { sendOTP, generateOTP } = require("../utils/otp.utils");
 
-// Replace with your Twilio Account SID and Auth Token from environment variables
-const accountSid = process.env.ACCOUNTSID;
-const authToken = process.env.AUTHTOKEN;
-
-// Create a Twilio client
-const client = new twilio(accountSid, authToken);
-
-// Function to generate a random OTP
-const generateOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-let storedOTP = ""; // Initialize a variable to store the OTP
-
-// Function to send OTP via SMS
-const sendOTP = async (phoneNumber) => {
-  const otp = generateOTP(); // Generate the OTP
-  storedOTP = otp; // Store the generated OTP
-  try {
-    await client.messages.create({
-      body: `Your OTP for Verification is: ${otp}`,
-      from: '+19519994404', // Replace with your Twilio phone number
-      to: phoneNumber,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-  });
-  }
-}
+let storedOTP = ""; // for verification of otp
 
 const sendOTPHandler = async (req, res) => {
-  const recipientPhoneNumber = req.body.phoneNumber; // Get the recipient's phone number from the request body
-  try {
-    await sendOTP(recipientPhoneNumber);
-    res.json({ message: 'OTP sent successfully' });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-  });
-  }
+    try {
+        const { phoneNumber } = req.body;
+        if (!phoneNumber) {
+            return res.status(400).json({
+                message: "Please enter a phone number",
+            });
+        }
+
+        const otp = generateOTP(); // Generate the OTP
+        await sendOTP(phoneNumber, otp); // Send the OTP
+        storedOTP = otp; // Store the OTP after it has been sent
+        res.status(200).json({
+            success: true,
+            message: "OTP sent successfully",
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
 };
 
+// Verify OTP
 const verifyOtpHandler = (req, res) => {
-  const userOTP = req.body.otp; 
-  // console.log(userOTP, storedOTP);
-  try {
-    if (userOTP === storedOTP) {
-      res.json({ 
-        message: 'OTP verified successfully',
-        success: true
-       });
-    } else {
-      res.status(400).json({
-        message: 'Invalid OTP',
-        success: false
-      });
+    const userOTP = req.body.otp;
+    try {
+        if (userOTP === storedOTP) {
+            res.json({
+                message: 'OTP verified successfully',
+                success: true,
+            });
+        } else {
+            res.status(400).json({
+                message: 'Invalid OTP',
+                success: false,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
     }
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-  });
-  }
-}
+};
 
 module.exports = {
-  verifyOtpHandler,
-  sendOTPHandler,
-  sendOTP
+    sendOTPHandler,
+    verifyOtpHandler,
 };

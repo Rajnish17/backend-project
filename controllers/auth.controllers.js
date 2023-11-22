@@ -1,14 +1,14 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const{sendOTP}=require("./otp.controller");
+
 
 //signup controller here
 const Signup = async (req, res) => {
-    const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, landmark, password,role} = req.body;
+    const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, landmark, password } = req.body;
 
     // Check if any of the required parameters are missing
-    if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password ||!role) {
+    if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password) {
         return res.status(400).json({
             success: false,
             message: "Please provide all required details",
@@ -25,7 +25,7 @@ const Signup = async (req, res) => {
                 message: "User with this email already exists",
             });
         }
-        if(password.length < 8){
+        if (password.length < 8) {
             return res.status(400).json({
                 success: false,
                 message: "password length should be greater than 8 character",
@@ -48,7 +48,6 @@ const Signup = async (req, res) => {
             block,
             pinCode,
             landmark,
-            role,
             password: hashedPassword,
         });
 
@@ -65,7 +64,7 @@ const Signup = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Internal server error",
-            error:error
+            error: error
         });
     }
 };
@@ -109,7 +108,7 @@ const Login = async (req, res) => {
             {
                 userId: user._id,
                 email: user.email,
-                role:user.role
+                role: user.role
             },
             process.env.JWT_SECRET, // Use a secret key stored in your environment variables
             {
@@ -128,32 +127,15 @@ const Login = async (req, res) => {
         res.status(500).json({
             success: false,
             message: "Internal server error",
-            error:error
+            error: error
         });
     }
 };
 
-const check=async(req,res)=>{
-    const phoneNumber=req.body.phoneno;
-try {
-    await sendOTP(phoneNumber);
-    res.status(200).json({
-        success:true,
-        message:"otp sent"
-    })
-} catch (error) {
-    // console.log(error);
-    res.status(500).json({
-        success: false,
-        message: "Internal server error",
-        error:error
-    });
-}
-}
 
 
 module.exports = {
     Signup,
-    Login,
-    check
+    Login
+
 };

@@ -5,20 +5,64 @@ const jwt = require("jsonwebtoken");
 
 // Create a new retailer
 const createRetailer = async (req, res) => {
-    try {
-      // Validate required fields
-      const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, password, aadharNo, panNo } = req.body;
-  
-      if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password || !aadharNo || !panNo) {
-        return res.status(400).json({ message: 'All fields are required' });
+  const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, password, aadharNo, panNo } = req.body;
+
+  // Check if any of the required parameters are missing
+  if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password || !aadharNo || !panNo) {
+      return res.status(400).json({
+          success: false,
+          message: 'Please provide all required details',
+      });
+  }
+
+  try {
+      // Check if the retailer with the provided email already exists
+      const existingRetailer = await Retailer.findOne({ email });
+
+      if (existingRetailer) {
+          return res.status(400).json({
+              success: false,
+              message: 'Retailer with this email already exists',
+          });
       }
-  
-      const newRetailer = await Retailer.create(req.body);
-      res.status(201).json(newRetailer);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+
+      // Hash the retailer's password before saving it to the database
+      const saltRounds = 10; // You can adjust the number of salt rounds
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      // Create a new retailer instance with the hashed password
+      const newRetailer = new Retailer({
+          firstName,
+          lastName,
+          email,
+          phoneNo,
+          address,
+          state,
+          city,
+          block,
+          pinCode,
+          password: hashedPassword,
+          aadharNo,
+          panNo
+      });
+
+      // Save the new retailer to the database
+      await newRetailer.save();
+
+      res.status(201).json({
+          success: true,
+          message: 'Retailer registered successfully',
+          retailer: newRetailer,
+      });
+  } catch (error) {
+      res.status(500).json({
+          success: false,
+          message: 'Internal server error',
+          error: error.message,
+      });
+  }
+};
+
 
   const loginRetailer = async (req, res) => {
     try {

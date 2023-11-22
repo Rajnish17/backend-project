@@ -14,7 +14,7 @@ const {
 router.post('/retailers', createRetailer);
 
 // Login a retailer
-router.post('/retailers/login', loginRetailer);
+router.post('/login', loginRetailer);
 
 // Get all retailers
 router.get('/retailers', getAllRetailers);
