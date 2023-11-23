@@ -24,10 +24,10 @@ const sendOTP = async (phoneNo,otp) => {
             to: phoneNo,
         });
 
-        return {
-            success: true,
-            message: "OTP sent successfully",
-        };
+        // return {
+        //     success: true,
+        //     message: "OTP sent successfully",
+        // };
     } catch (error) {
         console.error(error);
         res.status(500).json({
