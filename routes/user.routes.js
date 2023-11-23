@@ -5,10 +5,10 @@ const {isAdmin} =require("../middleware/usertype")
 
 
 // CRUD operations for users
-router.get('/users',isAdmin, getAllUsers);
-router.get('/users/:id', getUserById);
-router.put('/users/:id', updateUserById);
-router.delete('/users/:id', deleteUserById);
+router.get('/getall',isAdmin, getAllUsers);
+router.get('/getone/:id', getUserById);
+router.put('/update/:id', updateUserById);
+router.delete('/delete/:id', deleteUserById);
 
 
 module.exports =router; 

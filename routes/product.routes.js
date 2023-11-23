@@ -11,9 +11,9 @@ const { isRetailer, isCustomer } = require("../middleware/usertype");
 
 // CRUD operations for products
 router.post('/add', isRetailer, addProduct);
-router.get('/products', isCustomer, getAllProducts); // Allow customers to view products
-router.get('/products/:id', isCustomer, getProductById); // Allow customers to view products
-router.put('/products/:id', isRetailer, updateProductById);
-router.delete('/products/:id', isRetailer, deleteProductById);
+router.get('/getall', isCustomer, getAllProducts); // Allow customers to view products
+router.get('/getone/:id', isCustomer, getProductById); // Allow customers to view products
+router.put('/update/:id', isRetailer, updateProductById);
+router.delete('/delete/:id', isRetailer, deleteProductById);
 
 module.exports = router;

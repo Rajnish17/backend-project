@@ -63,7 +63,7 @@ const createRetailer = async (req, res) => {
   }
 };
 
-
+//login retailer
   const loginRetailer = async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -95,7 +95,7 @@ const createRetailer = async (req, res) => {
     res.status(200).json({
         success: true,
         message: "Login successful",
-        // user,
+        retailer,
         token,
     });
     } catch (error) {
@@ -104,6 +104,76 @@ const createRetailer = async (req, res) => {
   };
 
 
+  //login with mobile and email
+  /*
+  const loginRetailer = async (req, res) => {
+    try {
+      const { email, mobile, password, otp } = req.body;
+  
+      // Validate email/mobile and password/otp
+      if ((email && !password) || (mobile && !otp)) {
+        return res.status(400).json({ message: 'Invalid request parameters' });
+      }
+  
+      if (email) {
+        // Login with email and password
+        const retailer = await Retailer.findOne({ email });
+  
+        if (!retailer || !bcrypt.compareSync(password, retailer.password)) {
+          return res.status(401).json({ message: 'Invalid email or password' });
+        }
+  
+        const token = generateAndSendToken(retailer);
+        res.status(200).json({
+          success: true,
+          message: "Login successful",
+          token,
+        });
+      } else if (mobile) {
+        // Login with mobile and OTP
+        const storedOTP = otpStore[mobile];
+  
+        if (!storedOTP || otp !== storedOTP) {
+          return res.status(401).json({ message: 'Invalid mobile or OTP' });
+        }
+  
+        delete otpStore[mobile]; // Remove the OTP after successful verification
+  
+        const retailer = await Retailer.findOne({ phoneNo: mobile });
+  
+        if (!retailer) {
+          return res.status(401).json({ message: 'Retailer not found for the provided mobile number' });
+        }
+  
+        const token = generateAndSendToken(retailer);
+        res.status(200).json({
+          success: true,
+          message: "Login successful",
+          token,
+        });
+      } else {
+        return res.status(400).json({ message: 'Invalid request parameters' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  const generateAndSendToken = (retailer) => {
+    return jwt.sign(
+      {
+        userId: retailer._id,
+        role: retailer.role,
+      },
+      process.env.JWT_SECRET, // Use a secret key stored in your environment variables
+      {
+        expiresIn: "1h", // Token expiration time (adjust as needed)
+      }
+    );
+  };
+*/
+
+  //end here
 
 
 

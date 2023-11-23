@@ -11,21 +11,21 @@ const {
 } = require('../controllers/retailer.controller');
 
 // Create a new retailer
-router.post('/retailers', createRetailer);
+router.post('/signup', createRetailer);
 
 // Login a retailer
 router.post('/login', loginRetailer);
 
 // Get all retailers
-router.get('/retailers', getAllRetailers);
+router.get('/getall', getAllRetailers);
 
 // Get a specific retailer by ID
 router.get('/retailers/:id', getRetailerById);
 
 // Update a retailer by ID
-router.put('/retailers/:id', updateRetailerById);
+router.put('/update/:id', updateRetailerById);
 
 // Delete a retailer by ID
-router.delete('/retailers/:id', deleteRetailerById);
+router.delete('/delete/:id', deleteRetailerById);
 
 module.exports = router;
