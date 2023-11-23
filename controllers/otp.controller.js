@@ -1,6 +1,6 @@
+const Retailer = require("../models/retailer.model");
 const { sendOTP, generateOTP } = require("../utils/otp.utils");
 const jwt = require("jsonwebtoken");
-const Retailer = require("../models/retailer.model");
 
 let otpStore = {}; // Object to store OTPs for each phone number
 
