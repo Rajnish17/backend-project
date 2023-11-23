@@ -15,7 +15,7 @@ const generateOTP = () => {
 
 // Function to send OTP via SMS
 const sendOTP = async (phoneNo,otp) => {
-    // const otp = generateOTP(); // Generate the OTP
+   
 
     try {
         await client.messages.create({
@@ -30,8 +30,11 @@ const sendOTP = async (phoneNo,otp) => {
         };
     } catch (error) {
         console.error(error);
-        // You shouldn't handle the response here, just throw the error
-        throw error;
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            error: error
+        });
     }
 }
 

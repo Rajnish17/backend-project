@@ -11,13 +11,4 @@ router.put('/users/:id', updateUserById);
 router.delete('/users/:id', deleteUserById);
 
 
-module.exports =router;
-
-
-
-
-
-
-    
-    
-    
+module.exports =router; 
