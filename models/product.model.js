@@ -1,5 +1,6 @@
 // product.js
 const mongoose = require('mongoose');
+const Retailer  =require("./retailer.model");
 
 const productSchema = new mongoose.Schema({
     brandName: {
@@ -26,6 +27,11 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Retailer',
+    required: true,
+},
 },{timestamps:true});
 
 const Product = mongoose.model('Product', productSchema);

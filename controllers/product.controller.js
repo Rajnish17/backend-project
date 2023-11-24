@@ -6,11 +6,15 @@ const addProduct = async (req, res) => {
         const { brandName, modelNo, description, price, category, stock } = req.body;
 
         // Validate input data (you might want to add more robust validation)
-        if (!brandName || !description || !price || !category || !stock ||!modelNo) {
+        if (!brandName || !description || !price || !category || !stock || !modelNo) {
             return res.status(400).json({ error: 'Missing required fields.' });
         }
 
-        // Create a new product instance
+        // Get the retailer's ID from the authenticated user (assuming you have user information in req.user)
+        const retailerId = req.user.userId;
+        // console.log(retailerId)
+
+        // Create a new product instance with the retailer's ID
         const newProduct = new Product({
             brandName,
             modelNo,
@@ -18,6 +22,7 @@ const addProduct = async (req, res) => {
             price,
             category,
             stock,
+            owner: retailerId,
         });
 
         // Save the product to the database
@@ -33,6 +38,7 @@ const addProduct = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 const getAllProducts = async (req, res) => {
     try {
