@@ -20,7 +20,7 @@ router.post('/login', loginRetailer);
 router.get('/getall', getAllRetailers);
 
 // Get a specific retailer by ID
-router.get('/retailers/:id', getRetailerById);
+router.get('/getone/:id', getRetailerById);
 
 // Update a retailer by ID
 router.put('/update/:id', updateRetailerById);

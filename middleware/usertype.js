@@ -1,121 +1,143 @@
 const jwt = require("jsonwebtoken");
 
-const isAdmin = (req, res, next) => {
-  let token =req.headers.token
-  
-  try {
-    if (!token){
-      return res.status(400).json({
-        success:false,
-        message:"please provide token"
-      })
-    }
-    if(token){
-      token= token.split(" ")[1];
-      let user=jwt.verify(token,process.env.JWT_SECRET);
-      // req.user=user.role
-      
-      if(user.role =="admin"){
 
-        next();
-      }else{
-        res.status(400).json({
-          success:false,
-          message:"you are not authorised"
-        })
-      }
+const isAdmin = (req, res, next) => {
+  let token = req.headers.token;
+
+  try {
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a token",
+      });
     }
-    
+
+    token = token.split(" ")[1];
+
+    let user = jwt.verify(token, process.env.JWT_SECRET);
+    if (user.role === "admin") {
+      req.user = user; // Optionally, you can set the user information in req.user
+      next();
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "You are not authorized",
+      });
+    }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success:false,
-    })
+    // console.error(error);
+    if (error.name === "JsonWebTokenError") {
+      res.status(401).json({
+        success: false,
+        message: "Invalid token format",
+      });
+    } else if (error.name === "TokenExpiredError") {
+      res.status(401).json({
+        success: false,
+        message: "Token has expired",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
   }
 };
+
+
+
 
 const isRetailer = (req, res, next) => {
   let token = req.headers.token;
 
   try {
-    if (token) {
-      // Check if the token has the expected format
-      if (token.includes(" ")) {
-        token = token.split(" ")[1];
-        let user = jwt.verify(token, process.env.JWT_SECRET);
-        
-        // Uncomment the line below if you want to set req.user to user.role
-        // req.user = user.role;
-
-        console.log(user,user.role);
-
-        if (user.role === "retailer") {
-          next();
-        } else {
-          res.status(400).json({
-            success: false,
-            message: "You are not authorized",
-          });
-        }
-      } else {
-        res.status(400).json({
-          success: false,
-          message: "Invalid token format",
-        });
-      }
-    } else {
-      res.status(400).json({
+    if (!token) {
+      return res.status(400).json({
         success: false,
         message: "Token not provided",
       });
     }
+
+    token = token.split(" ")[1];
+
+    let user = jwt.verify(token, process.env.JWT_SECRET);
+    if (user.role === "retailer") {
+      req.user = user; // Optionally, you can set the user information in req.user
+      next();
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "You are not authorized",
+      });
+    }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    // console.error(error);
+    if (error.name === "JsonWebTokenError") {
+      res.status(401).json({
+        success: false,
+        message: "Invalid token format",
+      });
+    } else if (error.name === "TokenExpiredError") {
+      res.status(401).json({
+        success: false,
+        message: "Token has expired",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
   }
 };
 
-
 const isCustomer = (req, res, next) => {
-  let token =req.headers.token
-  
-  try {
-    if (!token){
-      return res.status(400).json({
-        success:false,
-        message:"please provide token"
-      })
-    }
-    if(token){
-      token= token.split(" ")[1];
-      let user=jwt.verify(token,process.env.JWT_SECRET);
-      // req.user=user.role
-      // console.log(user);
-      // console.log(req.user);
-      if(user.role =="customer"){
+  let token = req.headers.token;
 
-        next();
-      }else{
-        res.status(400).json({
-          success:false,
-          message:"you are not authorised"
-        })
-      }
+  try {
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a token",
+      });
     }
-    
+
+    token = token.split(" ")[1];
+
+    let user = jwt.verify(token, process.env.JWT_SECRET);
+    if (user.role === "customer") {
+      req.user = user; // Optionally, you can set the user information in req.user
+      next();
+    } else {
+      res.status(403).json({
+        success: false,
+        message: "You are not authorized",
+      });
+    }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success:false,
-    })
+    // console.error(error);
+    if (error.name === "JsonWebTokenError") {
+      res.status(401).json({
+        success: false,
+        message: "Invalid token format",
+      });
+    } else if (error.name === "TokenExpiredError") {
+      res.status(401).json({
+        success: false,
+        message: "Token has expired",
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
   }
 };
 
 module.exports = {
   isAdmin,
   isRetailer,
-  isCustomer
+  isCustomer,
 };

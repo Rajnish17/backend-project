@@ -40,7 +40,7 @@ const retailerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  landMark: String,
+ 
   password: {
     type: String,
     required: true,

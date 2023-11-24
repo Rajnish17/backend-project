@@ -89,14 +89,14 @@ const createRetailer = async (req, res) => {
         },
         process.env.JWT_SECRET, // Use a secret key stored in your environment variables
         {
-            expiresIn: "1h", // Token expiration time (adjust as needed)
+            expiresIn: "7d", // Token expiration time (adjust as needed)
         }
     );
+    const role= retailer.role;
     res.status(200).json({
         success: true,
         message: "Login successful",
-        retailer,
-        token,
+        data:{ token,role}
     });
     } catch (error) {
       res.status(500).json({ error: error.message });

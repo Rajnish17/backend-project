@@ -112,15 +112,14 @@ const Login = async (req, res) => {
             },
             process.env.JWT_SECRET, // Use a secret key stored in your environment variables
             {
-                expiresIn: "1h", // Token expiration time (adjust as needed)
+                expiresIn: "7d", // Token expiration time (adjust as needed)
             }
         );
-
+        const role =user.role;
         res.status(200).json({
             success: true,
             message: "Login successful",
-            // user,
-            token,
+            data:{ token,role}
         });
     } catch (error) {
         // console.error(error);

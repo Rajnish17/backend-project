@@ -6,7 +6,7 @@ const addProduct = async (req, res) => {
         const { brandName, modelNo, description, price, category, stock } = req.body;
 
         // Validate input data (you might want to add more robust validation)
-        if (!brandName || !description || !price || !category || !stock) {
+        if (!brandName || !description || !price || !category || !stock ||!modelNo) {
             return res.status(400).json({ error: 'Missing required fields.' });
         }
 

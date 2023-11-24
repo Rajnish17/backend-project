@@ -1,0 +1,53 @@
+baseurl=https://emi-shop-backend.onrender.com
+
+
+customer:{
+    api: baseurl/auth/signup //for create a user
+    parameter:{
+        firstName, lastName, email, phoneNo, address, state, city, block, pinCode, landmark, password
+    },
+   api: baseurl/auth/login //for login 
+     parameter:{email,password}
+
+     api:baseurl/user/getall    to get all users {only admin send token after login } 
+     api:baseurl/user/getone/:id  to get one user
+     api:baseurl/user/update/:id  to update user
+     api:baseurl/user/delete/:id  to delete user
+       
+},
+
+retailer:{
+    api: baseurl/retailer/signup //for createRetailer
+    parameter:{
+        firstName, lastName, email, phoneNo, address, state, city, block, pinCode, password, aadharNo, panNo 
+    },
+
+   api: baseurl/retailer/login //for login with email and password
+     parameter:{email,password}
+
+   api: baseurl/otp/sendotp //for send otp for login retailer
+     parameter:{phoneNumber}
+
+   api: baseurl/otp/verifyotp //for login with mobile number with otp
+     parameter:{ phoneNumber, userOTP}
+
+     api:baseurl/retailer/getall    to get all retailer 
+     api:baseurl/retailer/getone/:id  to get one retailer 
+     api:baseurl/retailer/update/:id  to update retailer 
+     api:baseurl/retailer/delete/:id  to delete retailer 
+       
+},
+
+
+product:{
+   
+     api:baseurl/product/add    to add product only retailer
+     parameter: { brandName, modelNo, description, price, category, stock }
+
+     api:baseurl/product/getall    to get all products only customer
+     api:baseurl/product/getone/:id  to get one product only customer
+     api:baseurl/product/update/:id  to update product only retailer 
+     api:baseurl/product/delete/:id  to delete product only retailer 
+       
+},
+
