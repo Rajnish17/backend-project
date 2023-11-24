@@ -10,12 +10,14 @@ const client = new twilio(accountSid, authToken);
 
 // Function to generate a random OTP
 const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = "123456"
+    // return Math.floor(100000 + Math.random() * 900000).toString();
+    return otp;
 }
 
 // Function to send OTP via SMS
-const sendOTP = async (phoneNo,otp) => {
-   
+const sendOTP = async (phoneNo, otp) => {
+
 
     try {
         await client.messages.create({
@@ -24,10 +26,6 @@ const sendOTP = async (phoneNo,otp) => {
             to: phoneNo,
         });
 
-        // return {
-        //     success: true,
-        //     message: "OTP sent successfully",
-        // };
     } catch (error) {
         console.error(error);
         res.status(500).json({
