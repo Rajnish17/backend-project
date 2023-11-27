@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
     remainingAmount: { type: Number, required: true },
     remainingDuration: { type: Number, required: true },
     emiCompleted: { type: Boolean, default: false },
-    owner:{
+    retailer:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Retailer',
         required: true,
