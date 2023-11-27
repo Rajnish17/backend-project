@@ -138,6 +138,5 @@ const isCustomer = (req, res, next) => {
 
 module.exports = {
   isAdmin,
-  isRetailer,
-  isCustomer,
+  isRetailer
 };

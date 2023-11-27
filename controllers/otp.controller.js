@@ -13,7 +13,13 @@ const sendOTPHandler = async (req, res) => {
                 message: "Please enter a phone number",
             });
         }
-
+        let retailer = await Retailer.findOne({ phoneNumber });
+        if(!retailer){
+            return res.status(400).json({
+                success:false,
+                message:"No such user found"
+            })
+        }
         const otp = generateOTP(); // Generate the OTP
         await sendOTP(phoneNumber, otp); // Send the OTP
         otpStore[phoneNumber] = otp; // Store the OTP in the object
@@ -49,7 +55,7 @@ const verifyOtpHandler = async (req, res) => {
             delete otpStore[phoneNumber]; // Remove the OTP after successful verification
 
             // Check if the retailer exists
-            const retailer = await Retailer.findOne({ phoneNo: phoneNumber });
+            const retailer = await Retailer.findOne({phoneNumber:phoneNumber });
 
             if (!retailer) {
                 return res.status(401).json({

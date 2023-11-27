@@ -16,9 +16,10 @@ const retailerSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  phoneNo: {
+  phoneNumber: {
     type: String,
     required: true,
+    unique:true
   },
   address: {
     type: String,
@@ -41,10 +42,6 @@ const retailerSchema = new mongoose.Schema({
     required: true,
   },
  
-  password: {
-    type: String,
-    required: true,
-  },
   aadharNo: {
     type: String,
     required: true,
@@ -53,7 +50,7 @@ const retailerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  role: { type: String, enum: ['admin', 'customer', 'retailer'], default: 'retailer' },
+  role: { type: String, enum: ['admin','retailer'], default: 'retailer' },
 
   
 }, { timestamps: true })

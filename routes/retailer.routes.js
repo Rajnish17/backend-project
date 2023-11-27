@@ -1,31 +1,22 @@
-// routes/retailerRoutes.js
 const express = require('express');
 const router = express.Router();
-const {
-    createRetailer,
-    loginRetailer,
-    getAllRetailers,
-    getRetailerById,
-    updateRetailerById,
-    deleteRetailerById,
-} = require('../controllers/retailer.controller');
+const {createRetailer,getAllRetailers,getRetailerById,updateRetailerById,deleteRetailerById} = require('../controllers/retailer.controller');
+const{isAdmin} =require("../middleware/usertype")
+
 
 // Create a new retailer
-router.post('/signup', createRetailer);
-
-// Login a retailer
-router.post('/login', loginRetailer);
+router.post('/signup',isAdmin, createRetailer);
 
 // Get all retailers
-router.get('/getall', getAllRetailers);
+router.get('/getall',isAdmin, getAllRetailers);
 
 // Get a specific retailer by ID
 router.get('/getone/:id', getRetailerById);
 
 // Update a retailer by ID
-router.put('/update/:id', updateRetailerById);
+router.put('/update/:id',isAdmin, updateRetailerById);
 
 // Delete a retailer by ID
-router.delete('/delete/:id', deleteRetailerById);
+router.delete('/delete/:id',isAdmin, deleteRetailerById);
 
 module.exports = router;

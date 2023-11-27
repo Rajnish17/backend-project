@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 
 // Create a new retailer
 const createRetailer = async (req, res) => {
-  const { firstName, lastName, email, phoneNo, address, state, city, block, pinCode, password, aadharNo, panNo } = req.body;
+  const { firstName, lastName, email, phoneNumber, address, state, city, block, pinCode, aadharNo, panNo,role } = req.body;
 
   // Check if any of the required parameters are missing
-  if (!firstName || !lastName || !email || !phoneNo || !address || !state || !city || !block || !pinCode || !password || !aadharNo || !panNo) {
+  if (!firstName || !lastName || !email || !phoneNumber || !address || !state || !city || !block || !pinCode || !aadharNo || !panNo) {
       return res.status(400).json({
           success: false,
           message: 'Please provide all required details',
@@ -17,33 +17,39 @@ const createRetailer = async (req, res) => {
 
   try {
       // Check if the retailer with the provided email already exists
-      const existingRetailer = await Retailer.findOne({ email });
-
+      const existingRetailer = await Retailer.findOne({
+        $or: [
+          { email: email },
+          { phoneNumber: phoneNumber }
+        ]
+      });
+      
       if (existingRetailer) {
-          return res.status(400).json({
-              success: false,
-              message: 'Retailer with this email already exists',
-          });
+        return res.status(400).json({
+          success: false,
+          message: 'Retailer with this email or phone number already exists',
+        });
       }
 
       // Hash the retailer's password before saving it to the database
-      const saltRounds = 10; // You can adjust the number of salt rounds
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      // const saltRounds = 10; // You can adjust the number of salt rounds
+      // const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       // Create a new retailer instance with the hashed password
       const newRetailer = new Retailer({
           firstName,
           lastName,
           email,
-          phoneNo,
+          phoneNumber,
           address,
           state,
           city,
           block,
           pinCode,
-          password: hashedPassword,
           aadharNo,
-          panNo
+          panNo,
+          role
+          // password: hashedPassword,
       });
 
       // Save the new retailer to the database
@@ -64,44 +70,44 @@ const createRetailer = async (req, res) => {
 };
 
 //login retailer
-  const loginRetailer = async (req, res) => {
-    try {
-      const { email, password } = req.body;
+  // const loginRetailer = async (req, res) => {
+  //   try {
+  //     const { email, password } = req.body;
   
-      // Validate email and password
-      if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
-      }
+  //     // Validate email and password
+  //     if (!email || !password) {
+  //       return res.status(400).json({ message: 'Email and password are required' });
+  //     }
   
-      // Find the retailer by email
-      const retailer = await Retailer.findOne({ email });
+  //     // Find the retailer by email
+  //     const retailer = await Retailer.findOne({ email });
   
-      // Check if retailer exists and password is correct
-      if (!retailer || !bcrypt.compareSync(password, retailer.password)) {
-        return res.status(401).json({ message: 'Invalid email or password' });
-      }
+  //     // Check if retailer exists and password is correct
+  //     if (!retailer || !bcrypt.compareSync(password, retailer.password)) {
+  //       return res.status(401).json({ message: 'Invalid email or password' });
+  //     }
   
-      // Generate and send a token
-      const token = jwt.sign(
-        {
-            userId: retailer._id,
-            role:retailer.role
-        },
-        process.env.JWT_SECRET, // Use a secret key stored in your environment variables
-        {
-            expiresIn: "7d", // Token expiration time (adjust as needed)
-        }
-    );
-    const role= retailer.role;
-    res.status(200).json({
-        success: true,
-        message: "Login successful",
-        data:{ token,role}
-    });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+  //     // Generate and send a token
+  //     const token = jwt.sign(
+  //       {
+  //           userId: retailer._id,
+  //           role:retailer.role
+  //       },
+  //       process.env.JWT_SECRET, // Use a secret key stored in your environment variables
+  //       {
+  //           expiresIn: "7d", // Token expiration time (adjust as needed)
+  //       }
+  //   );
+  //   const role= retailer.role;
+  //   res.status(200).json({
+  //       success: true,
+  //       message: "Login successful",
+  //       data:{ token,role}
+  //   });
+  //   } catch (error) {
+  //     res.status(500).json({ error: error.message });
+  //   }
+  // };
 
 
   //login with mobile and email
@@ -233,7 +239,7 @@ const deleteRetailerById = async (req, res) => {
 
 module.exports = {
   createRetailer,
-  loginRetailer,
+  // loginRetailer,
   getAllRetailers,
   getRetailerById,
   updateRetailerById,
