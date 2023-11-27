@@ -58,7 +58,7 @@ const createRetailer = async (req, res) => {
       res.status(201).json({
           success: true,
           message: 'Retailer registered successfully',
-          data:newRetailer
+          newRetailer
       });
   } catch (error) {
       res.status(500).json({
@@ -190,11 +190,9 @@ const getAllRetailers = async (req, res) => {
     const retailers = await Retailer.find();
     res.status(200).json({
       success: true,
-      data:{
-        message:"Retailer Details Fetched Successfully",
-        count: retailers.length,
-        retailers
-      }
+      message:"Retailer Details Fetched Successfully",
+      count: retailers.length,
+      retailers
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -210,10 +208,9 @@ const getRetailerById = async (req, res) => {
     }
     res.status(200).json({
       success:true,
-      data:{
-        message:"Retailer Details Fetched successfully",
-        retailer
-      }
+      message:"Retailer Details Fetched successfully",
+      retailer
+     
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -233,10 +230,8 @@ const updateRetailerById = async (req, res) => {
     }
     res.status(200).json({
      success:true,
-      data: {
-        message: `Successfully updated retailer with id ${req.params.id}`,
-        updatedRetailer
-      }
+     message: `Successfully updated retailer with id ${req.params.id}`,
+     updatedRetailer
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -252,9 +247,7 @@ const deleteRetailerById = async (req, res) => {
     }
     res.status(200).json({
       success:true,
-      data: {
-        message: `Deleted retailer with id ${req.params.id}`
-      }
+      message: `Deleted retailer with id ${req.params.id}`
      });
   } catch (error) {
     res.status(500).json({ error: error.message });
