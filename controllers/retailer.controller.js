@@ -58,7 +58,7 @@ const createRetailer = async (req, res) => {
       res.status(201).json({
           success: true,
           message: 'Retailer registered successfully',
-          retailer: newRetailer,
+          data:newRetailer
       });
   } catch (error) {
       res.status(500).json({
@@ -188,7 +188,14 @@ const createRetailer = async (req, res) => {
 const getAllRetailers = async (req, res) => {
   try {
     const retailers = await Retailer.find();
-    res.status(200).json(retailers);
+    res.status(200).json({
+      success: true,
+      data:{
+        message:"Retailer Details Fetched Successfully",
+        count: retailers.length,
+        retailers
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -201,7 +208,13 @@ const getRetailerById = async (req, res) => {
     if (!retailer) {
       return res.status(404).json({ message: 'Retailer not found' });
     }
-    res.status(200).json(retailer);
+    res.status(200).json({
+      success:true,
+      data:{
+        message:"Retailer Details Fetched successfully",
+        retailer
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -218,7 +231,13 @@ const updateRetailerById = async (req, res) => {
     if (!updatedRetailer) {
       return res.status(404).json({ message: 'Retailer not found' });
     }
-    res.status(200).json(updatedRetailer);
+    res.status(200).json({
+     success:true,
+      data: {
+        message: `Successfully updated retailer with id ${req.params.id}`,
+        updatedRetailer
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -231,7 +250,12 @@ const deleteRetailerById = async (req, res) => {
     if (!deletedRetailer) {
       return res.status(404).json({ message: 'Retailer not found' });
     }
-    res.status(200).json({ message: 'Retailer deleted successfully' });
+    res.status(200).json({
+      success:true,
+      data: {
+        message: `Deleted retailer with id ${req.params.id}`
+      }
+     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
