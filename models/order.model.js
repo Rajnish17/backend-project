@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Retailer =require("./retailer.model")
 
 const orderSchema = new mongoose.Schema({
     brandName: { type: String, required: true },
@@ -10,6 +11,11 @@ const orderSchema = new mongoose.Schema({
     remainingAmount: { type: Number, required: true },
     remainingDuration: { type: Number, required: true },
     emiCompleted: { type: Boolean, default: false },
+    owner:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Retailer',
+        required: true,
+    }
 },{timestamps:true});
 
 const Order = mongoose.model('Order', orderSchema);

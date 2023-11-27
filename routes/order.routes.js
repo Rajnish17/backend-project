@@ -8,15 +8,15 @@ const {
     deleteOrder
 } = require("../controllers/order.controller")
 
+const{isRetailer} =require("../middleware/usertype")
 
 
 
-
-router.post("/create", createOrder);
-router.get("/getall", getAllOrders);
-router.get("/getone", getOrderById);
-router.put("/update", updateOrder);
-router.delete("/delete", deleteOrder);
+router.post("/create",isRetailer, createOrder);
+router.get("/getall",isRetailer, getAllOrders);
+router.get("/getone",isRetailer, getOrderById);
+router.put("/update",isRetailer, updateOrder);
+router.delete("/delete",isRetailer, deleteOrder);
 
 
 module.exports = router;
