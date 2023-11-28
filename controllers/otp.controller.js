@@ -21,7 +21,24 @@ const sendOTPHandler = async (req, res) => {
             })
         }
         const otp = generateOTP(); // Generate the OTP
-        await sendOTP(phoneNumber, otp); // Send the OTP
+
+        // Send the OTP
+        try {
+            await sendOTP(phoneNumber, otp);
+        } catch (error) {
+            console.error(error);
+            delete otpStore[phoneNumber];
+            return res.status(500).json({
+                success: false,
+                message: "Error sending OTP",
+            });
+        }
+
+        // Add a timeout to remove the OTP after a certain duration (e.g., 5 minutes)
+        setTimeout(() => {
+            delete otpStore[phoneNumber];
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+
         otpStore[phoneNumber] = otp; // Store the OTP in the object
         res.status(200).json({
             success: true,
@@ -29,7 +46,7 @@ const sendOTPHandler = async (req, res) => {
         });
 
     } catch (error) {
-        // console.error(error);
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: "Internal server error",
@@ -55,7 +72,7 @@ const verifyOtpHandler = async (req, res) => {
             delete otpStore[phoneNumber]; // Remove the OTP after successful verification
 
             // Check if the retailer exists
-            const retailer = await Retailer.findOne({phoneNumber:phoneNumber });
+            const retailer = await Retailer.findOne({phoneNumber: phoneNumber });
 
             if (!retailer) {
                 return res.status(401).json({
@@ -66,12 +83,11 @@ const verifyOtpHandler = async (req, res) => {
 
             // Generate and send a token for retailer login
             const token = generateAndSendToken(retailer);
-            const role= retailer.role;
+            const role = retailer.role;
             return res.json({
                 message: 'OTP successfully verified.',
                 success: true,
-                data:{ token,role}
-               
+                data: { token, role }
             });
         } else {
             // Invalid OTP

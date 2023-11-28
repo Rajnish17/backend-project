@@ -46,8 +46,6 @@ const isAdmin = (req, res, next) => {
 };
 
 
-
-
 const isRetailer = (req, res, next) => {
   let token = req.headers.token;
 
@@ -91,6 +89,7 @@ const isRetailer = (req, res, next) => {
     }
   }
 };
+
 
 const isCustomer = (req, res, next) => {
   let token = req.headers.token;

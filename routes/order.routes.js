@@ -14,9 +14,10 @@ const{isRetailer} =require("../middleware/usertype")
 
 router.post("/create",isRetailer, createOrder);
 router.get("/getall",isRetailer, getAllOrders);
-router.get("/getone",isRetailer, getOrderById);
-router.put("/update",isRetailer, updateOrder);
-router.delete("/delete",isRetailer, deleteOrder);
+router.get("/getone/:id",isRetailer, getOrderById);
+router.put("/update/:id",isRetailer, updateOrder);
+router.delete("/delete/:id",isRetailer, deleteOrder);//
 
 
 module.exports = router;
+
