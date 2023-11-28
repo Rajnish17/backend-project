@@ -24,7 +24,7 @@ const sendOTPHandler = async (req, res) => {
 
         // Send the OTP
         try {
-            await sendOTP(phoneNumber, otp);
+            // await sendOTP(phoneNumber, otp);
         } catch (error) {
             console.error(error);
             delete otpStore[phoneNumber];
