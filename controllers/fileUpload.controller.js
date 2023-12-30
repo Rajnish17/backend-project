@@ -5,7 +5,11 @@ const Upload = require('../models/fileUpload.model');
 const uploadFile = async (req, res) => {
   try {
     // Save file URL to MongoDB
-    const newUpload = new Upload({ url: req.file.path });
+    const userId = req.user.userId;
+    const newUpload = new Upload({
+        url: req.file.path,
+        userId
+      });
     await newUpload.save();
 
     res.status(201).json({ message: 'File uploaded successfully', url: req.file.path });
@@ -15,6 +19,6 @@ const uploadFile = async (req, res) => {
   }
 };
 
-module.exports ={
-    uploadFile
+module.exports = {
+  uploadFile
 }
