@@ -1,19 +1,19 @@
 // models/Upload.js
 const mongoose = require('mongoose');
-const User =require("../models/user.model")
+const Retailer = require("../models/retailer.model")
 
 const uploadSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true,
   },
-  User:{
+  User: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
+    ref: 'Retailer',
+   
+  },
 },
-},
-{timestamps:true}
+  { timestamps: true }
 );
 
 const Upload = mongoose.model('Upload', uploadSchema);

@@ -5,7 +5,7 @@ const{isAdmin} =require("../middleware/usertype")
 
 
 // Create a new retailer
-router.post('/signup',isAdmin, createRetailer);
+router.post('/signup', createRetailer);
 
 // Get all retailers
 router.get('/getall',isAdmin, getAllRetailers);
