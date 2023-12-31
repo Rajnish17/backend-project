@@ -7,9 +7,10 @@ const uploadSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  User: {
+  retailerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Retailer',
+    required: true,
    
   },
 },
